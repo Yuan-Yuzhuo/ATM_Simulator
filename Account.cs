@@ -15,46 +15,22 @@ namespace ConsoleApplication3
         {
             return balance;
         }
-        
+
         public void SetBalance(int newBalance)
         {
             balance = newBalance;
         }
 
+        // 由于该类的构造函数可以直接设置新账户的账号密码，
+        // 故在不考虑做更改密码功能的情况下，不设计SetPin，SetAccounNum
         public int GetAccountNum()
         {
             return accountNum;
         }
 
-        /*
-         *   输入转出总额，执行账户扣款，返回操作成功与否
-         */
-        public bool DecrementBalance(int amount)
+        public int GetPin()
         {
-            if (this.balance > amount)
-            {
-                balance -= amount;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /*
-         *  输入一个pin码，返回验证成功/失败
-         */
-        public bool CheckPin(int pinEntered)
-        {
-            if (pinEntered == pin)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return pin;
         }
 
     }

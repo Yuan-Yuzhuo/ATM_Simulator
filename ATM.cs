@@ -6,55 +6,60 @@ using System.Threading.Tasks;
 namespace ConsoleApplication3
 {
 
-    public class ATM(Account[] ac)
+    public class ATM(CentralSystem system)
     {
-        // 该ATM的账户数组
-        private readonly Account[] ac = ac;
+        //ATM链接的数据中心（CentralSystem）
+        private CentralSystem system = system;
 
-        // 当前账户
-        private readonly Account activeAccount = null;
-
-        /*
-         *    输入一个账号，返回对应账号的账户对象
-         * 
-         */
+        // ATM操作的“当前账户”
+        private Account activeAccount = null;
 
         private Account FindAccount(string originalInput)
         {
 
             int input = Convert.ToInt32(originalInput);
 
-            for (int i = 0; i < this.ac.Length; i++)
+            foreach (Account acc in system.AccountList)
             {
-                if (ac[i].GetAccountNum() == input)
-                {
-                    return ac[i];
-                }
+                if (acc.GetAccountNum() == input) return acc;
             }
 
             return null;
         }
 
         // 输入账户对象，密码，返回正确与否
-        public bool CheckPin(Account account, string originalInput)
+        public bool CheckPin(string originalInputAccountNum, string originalInputPin)
         {
-            int input = Convert.ToInt32(originalInput);
-            return account.CheckPin(input);
+            int inputAccountNum = Convert.ToInt32(originalInputAccountNum);
+            int inputPin = Convert.ToInt32(originalInputPin);
+            return system.Check(inputAccountNum, inputPin);
         }
 
-        // 操作一：输入账户对象和取钱总额，执行操作，返回成功与否
-        public bool TakeMoney(Account account, int amount)
+        // 设置“当前账户”，传入账号，返回成功与否
+        public bool SetActiveAccount(string accNum)
         {
-            return account.DecrementBalance(amount);
+            this.activeAccount = FindAccount(accNum);
+            if (activeAccount == null) return false;
+            else return true;
         }
 
-        // 操作二：显式余额
-        public int GetBalance(Account account)
+        // 操作一：显式余额，注意：若未能找到对应账户，返回-1
+        public int GetBalance(int accountNum)
         {
-            return account.GetBalance();
+            return system.CheckBalance(accountNum);
         }
 
-        
+        // 操作二：对当前账户取钱，输入取钱总额，执行操作，返回成功与否
+        public bool TakeMoney(int amount)
+        {
+            return system.ReduceBalance(activeAccount.GetAccountNum(), amount);
+        }
 
+        // 操作三：对当前账户存钱，输入存钱总额，返回成功与否
+        // (这个其实不会失败)
+        public bool DepositMoney(int amount)
+        {
+            return system.Deposit(activeAccount.GetAccountNum(), amount);
+        }
     }
 }
