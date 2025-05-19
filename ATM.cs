@@ -52,14 +52,25 @@ namespace ConsoleApplication3
         // 操作二：对当前账户取钱，输入取钱总额，执行操作，返回成功与否
         public bool TakeMoney(int amount)
         {
-            return system.ReduceBalance(activeAccount.GetAccountNum(), amount);
+            if (activeAccount.GetBalance() > amount)
+            {
+                int balance = activeAccount.GetBalance();
+                Thread.Sleep(2000);
+                activeAccount.SetBalance(balance - amount);
+                return true;
+            }
+            else
+                return false;
         }
 
         // 操作三：对当前账户存钱，输入存钱总额，返回成功与否
-        // (这个其实不会失败)
+        // (这个不会失败)
         public bool DepositMoney(int amount)
         {
-            return system.Deposit(activeAccount.GetAccountNum(), amount);
+            int balance = activeAccount.GetBalance();
+            Thread.Sleep(2000);
+            activeAccount.SetBalance(balance - amount);
+            return true;
         }
     }
 }

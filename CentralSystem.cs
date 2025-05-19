@@ -1,3 +1,4 @@
+using System.Threading;
 
 namespace ConsoleApplication3
 {
@@ -49,34 +50,6 @@ namespace ConsoleApplication3
         {
             if (CheckIdentity(accountNum, pinNum) != null) return true;
             else return false;
-        }
-
-        public bool ReduceBalance(int accountNum, int amount)
-        {
-            foreach (Account acc in AccountList)
-            {
-                if (acc.GetAccountNum() == accountNum && acc.GetBalance() >= amount)
-                {
-                    // 这里考虑设置人为延迟
-                    acc.SetBalance(acc.GetBalance() - amount);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool Deposit(int accountNum, int amount)
-        {
-            foreach (Account acc in AccountList)
-            {
-                if (acc.GetAccountNum() == accountNum)
-                {
-                    // 这里考虑设置人为延迟
-                    acc.SetBalance(acc.GetBalance() + amount);
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
